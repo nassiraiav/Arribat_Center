@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaflet Tutorial</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      .leaflet-container {
+        height: 400px;
+        width: 600px;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+
+    <style>
+      #map {
+        width: 1400px;
+        height: 700px;
+      }
+
+      .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+      }
+      .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="./data/lines.js"></script>
+<script src="./data/points.js"></script>
+<script src="./data/polygons.js"></script>
+<script src="./data/nepaldata.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<script>
+  /*===================================================
+                        OSM  LAYER
+  ===================================================*/
+
+  var map = L.map("map").setView([34.00353899892543, -6.844664867326826], 18);
+  var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  });
+  osm.addTo(map);
+
+  /*===================================================
+                        MARKER
+  ===================================================*/
+  const LeafIcon = L.Icon.extend({
+    options: {
+      iconSize: [25, 25],
+    },
+  });
+
+  const Icon1 = new LeafIcon({ iconUrl: "img/prayer_room.png" });
+  const Icon2 = new LeafIcon({ iconUrl: "img/ascenseurs.png" });
+  const Icon3 = new LeafIcon({ iconUrl: "img/baby_changing.png" });
+  const Icon4 = new LeafIcon({ iconUrl: "img/desk d'acceuil.png" });
+  const Icon5 = new LeafIcon({ iconUrl: "img/escaliers.png" });
+  const Icon6 = new LeafIcon({ iconUrl: "img/parking.png" });
+  const Icon7 = new LeafIcon({ iconUrl: "img/toilettes.png" });
+  const Icon8 = new LeafIcon({ iconUrl: "img/travelators.png" });
+
+  const m1 = L.marker([34.003706246913474, -6.8448083860869042], {
+    icon: Icon8,
+  })
+    .bindPopup("Travelators")
+    .addTo(map);
+
+  const m2 = L.marker([34.003447869114837, -6.844825870298842], {
+    icon: Icon8,
+  })
+    .bindPopup("Travelators")
+    .addTo(map);
+
+  const m3 = L.marker([34.003614940473355, -6.8450415089127432], {
+    icon: Icon1,
+  })
+    .bindPopup("salle de prière")
+    .addTo(map);
+
+  const m5 = L.marker([34.003527519413666, -6.8451114457604954], {
+    icon: Icon7,
+  })
+    .bindPopup("Toilettes")
+    .addTo(map);
+
+  const m7 = L.marker([34.003287597172083, -6.8448287843341653], {
+    icon: Icon2,
+  })
+    .bindPopup("Ascenseurs")
+    .addTo(map);
+
+  const m8 = L.marker([34.003143838096143, -6.8451065890349572], {
+    icon: Icon2,
+  })
+    .bindPopup("Ascenseurs")
+    .addTo(map);
+
+  const m9 = L.marker([34.002958311180578, -6.845043451602959], {
+    icon: Icon8,
+  })
+    .bindPopup("Travelators")
+    .addTo(map);
+
+  const m10 = L.marker([34.002848549183419, -6.8450521937089279], {
+    icon: Icon4,
+  })
+    .bindPopup("Desk d'acceuil")
+    .addTo(map);
+  const m11 = L.marker([34.002838386002757, -6.8459097435061258], {
+    icon: Icon6,
+  })
+    .bindPopup("Accès parking")
+    .addTo(map);
+
+  const m12 = L.marker([34.003449811805062, -6.845586433518144], {
+    icon: Icon5,
+  })
+    .bindPopup("Escaliers")
+    .addTo(map);
+
+  const m13 = L.marker([34.003984051614289, -6.8453377691705812], {
+    icon: Icon8,
+  })
+    .bindPopup("Travelators")
+    .addTo(map);
+
+  const m14 = L.marker([34.003995707755578, -6.845963315419918], {
+    icon: Icon8,
+  })
+    .bindPopup("Travelators")
+    .addTo(map);
+
+  /*===================================================
+                       TILE LAYER
+  ===================================================*/
+
+  // Google Map Layer
+
+  googleStreets = L.tileLayer(
+    "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+    {
+      maxZoom: 20,
+      subdomains: ["mt0", "mt1", "mt2", "mt3"],
+    }
+  );
+  googleStreets.addTo(map);
+
+  // Satelite Layer
+  googleSat = L.tileLayer("http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+    maxZoom: 20,
+    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+  });
+  googleSat.addTo(map);
+
+  /*===================================================
+                        GEOJSON
+  ===================================================*/
+
+  var linedata = L.geoJSON(lines, {
+    style: {
+      color: "#000",
+    },
+  }).addTo(map);
+
+  var polygondata = L.geoJSON(polygones, {
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup("<b>This is </b>" + feature.properties.Nom);
+    },
+    style: {
+      fillColor: "#FEB24C",
+      fillOpacity: 1,
+      color: "#605252",
+    },
+  }).addTo(map);
+
+  /*===================================================
+                        LAYER CONTROL
+  ===================================================*/
+
+  var baseLayers = {
+    Satellite: googleSat,
+    "Google Map": googleStreets,
+    OpenStreetMap: osm,
+  };
+
+  var overlays = {
+    Passages: linedata,
+    Buildings: polygondata,
+  };
+
+  L.control.layers(baseLayers, overlays).addTo(map);
+
+  /*===================================================
+                        SEARCH BUTTON
+  ===================================================*/
+
+  L.Control.geocoder().addTo(map);
+
+  /*===================================================
+                        Choropleth Map
+  ===================================================*/
+
+  L.geoJSON(polygones).addTo(map);
+
+  function style(feature) {
+    return {
+      weight: 2,
+      opacity: 1,
+      color: "white",
+      dashArray: "3",
+      fillOpacity: 1,
+      fillColor: "#FEB24C",
+    };
+  }
+  L.geoJson(polygones, { style: style }).addTo(map);
+
+  function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+      weight: 5,
+      color: "#666",
+      dashArray: "",
+      fillOpacity: 1,
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      layer.bringToFront();
+    }
+
+    info.update(layer.feature.properties);
+  }
+
+  function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+    info.update();
+  }
+
+  var geojson;
+  // ... our listeners
+
+  function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+  }
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+      mouseover: highlightFeature,
+      mouseout: resetHighlight,
+      click: zoomToFeature,
+    });
+  }
+
+  geojson = L.geoJson(polygones, {
+    style: style,
+    onEachFeature: onEachFeature,
+  }).addTo(map);
+
+  var info = L.control();
+
+  info.onAdd = function (map) {
+    this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
+    this.update();
+    return this._div;
+  };
+
+  // method that we will use to update the control based on feature properties passed
+  info.update = function (props) {
+    const contents = props
+      ? `<b> Categorie: ${props.Categorie}</b><br /> ${props.Nom} `
+      : "Hover over a place";
+    this._div.innerHTML = `<h4>Arribat Center</h4>${contents}`;
+  };
+  info.addTo(map);
+
+  /*
+   * Create a custom icon to use with a GeoJSON layer instead of the default blue
+   * marker. This snippet assumes the map object (map) and GeoJSON object
+   * (myLayerData) have already been declared.
+   */
+</script>
